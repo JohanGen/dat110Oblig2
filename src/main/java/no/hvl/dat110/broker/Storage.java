@@ -8,6 +8,7 @@ import no.hvl.dat110.common.TODO;
 import no.hvl.dat110.common.Logger;
 import no.hvl.dat110.messagetransport.Connection;
 
+@SuppressWarnings("unused")
 public class Storage {
 
 	// data structure for managing subscriptions
@@ -52,50 +53,54 @@ public class Storage {
 
 	public void addClientSession(String user, Connection connection) {
 
-		// TODO: add corresponding client session to the storage
+		//  add corresponding client session to the storage
 		// See ClientSession class
 		
-		throw new UnsupportedOperationException(TODO.method());
+        ClientSession session = new ClientSession(user, connection);
+        clients.put(user, session);
 		
 	}
 
 	public void removeClientSession(String user) {
 
-		// TODO: disconnet the client (user) 
-		// and remove client session for user from the storage
-		
-		throw new UnsupportedOperationException(TODO.method());
+		 // disconnect the client (user)
+        // and remove client session for user from the storage
+        ClientSession session = clients.remove(user);
+        if (session != null) {
+            session.disconnect();
+        }
 		
 	}
 
 	public void createTopic(String topic) {
 
-		// TODO: create topic in the storage
-
-		throw new UnsupportedOperationException(TODO.method());
+		 // create topic in the storage
+        subscriptions.put(topic, ConcurrentHashMap.newKeySet());
 	
 	}
 
 	public void deleteTopic(String topic) {
 
-		// TODO: delete topic from the storage
-
-		throw new UnsupportedOperationException(TODO.method());
+		// delete topic from the storage
+        subscriptions.remove(topic);
 		
 	}
 
 	public void addSubscriber(String user, String topic) {
 
-		// TODO: add the user as subscriber to the topic
-		
-		throw new UnsupportedOperationException(TODO.method());
+		 // add the user as subscriber to the topic
+        Set<String> subscribers = subscriptions.get(topic);
+        if (subscribers != null) {
+            subscribers.add(user);
+        }
 		
 	}
 
 	public void removeSubscriber(String user, String topic) {
-
-		// TODO: remove the user as subscriber to the topic
-
-		throw new UnsupportedOperationException(TODO.method());
+		// remove the user as subscriber to the topic
+        Set<String> subscribers = subscriptions.get(topic);
+        if (subscribers != null) {
+            subscribers.remove(user);
+        }
 	}
 }
